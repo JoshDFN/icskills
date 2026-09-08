@@ -202,6 +202,26 @@
         "Uses `mops bench --compare` to compare against saved results",
         "Does NOT invent a non-existent command or suggest a manual benchmarking harness"
       ]
+    },
+    {
+      "name": "Adversarial: edited applied migration caught at build, not check",
+      "prompt": "My `backend` canister has `check-limit = 5` on its migration chain and `[canisters.backend.check-stable].path` set. I edited a migration that was already applied in production to fix a typo in its type, and `mops check` passes. Am I safe to deploy? Just answer directly.",
+      "expected_behaviors": [
+        "Says no \u2014 a passing `mops check` is not sufficient here",
+        "Explains `mops build` compiles the full chain regardless of `check-limit`, and folds the deployed baseline via `--stable-baseline` when `check-stable.path` is set",
+        "Names `M0268` as the resulting error",
+        "Identifies editing an already-applied migration as the problem (the same applies to deleting or backdating one)"
+      ]
+    },
+    {
+      "name": "Strict migration diagnostics on moc 1.15.0+",
+      "prompt": "I'm on moc 1.15.1 with `[canisters.backend.migrations]` configured. My `main.mo` declares a stable field that none of my migrations produce. Will `mops check` warn or error, and would the answer differ on an older moc pin? Just answer directly.",
+      "expected_behaviors": [
+        "Says it errors, not just warns",
+        "Names `M0267` as the error, rather than only the `M0254` warning",
+        "Attributes the stricter behavior to moc 1.15.0+ \u2014 older moc pins get the warning-only, pre-1.15.0 check",
+        "Does NOT claim the stricter check is disabled or that `moc --stable-baseline` is buggy"
+      ]
     }
   ],
   "trigger_evals": {
