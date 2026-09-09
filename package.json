@@ -28,7 +28,7 @@
   },
   "overrides": {
     "sharp": "^0.35.3",
-    "svgo": "^4.0.2",
+    "svgo": "^4.1.0",
     "@astrojs/preact": {
       "vite": "^6.4.3"
     }
